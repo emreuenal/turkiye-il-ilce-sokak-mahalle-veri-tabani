@@ -3,7 +3,7 @@ Bu Repo https://adres.nvi.gov.tr/VatandasIslemleri/AdresSorgu adresinde yer alan
 bilgilerini almak için oluşturulmuş **Pyton 3** scriptini içerir.
 
 Üzerinde çalışmakta olduğum bir proje için bu bilgiler gerekti ve tam olarak işime yarayacak ayrıntıda bir veri tabanı bulamadığım
-için bir pyton crawler yazarak bu bilgileri PostgreSQL, MariaDB ve MongoDB veri tabanlarına aktardım.
+için bir python crawler yazarak bu bilgileri PostgreSQL, MariaDB ve MongoDB veri tabanlarına aktardım.
 
 Eğer siz de bu bilgilere ihtiyaç duyuyorsanız bu crawler'ı kullanabilir **(!!! Lütfen Aşağıdaki Uyarıları Okuyunuz)** ya da dumps klasöründen
 kullanmak istediğiniz veri tabanı sunucusu için uygun olan dump'ı indirebilirsiniz.

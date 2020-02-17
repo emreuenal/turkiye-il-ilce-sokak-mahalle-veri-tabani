@@ -11,10 +11,18 @@ kullanmak istediğiniz veri tabanı sunucusu için uygun olan dump'ı indirebili
 # Uyarılar
 Mecbur kalmadıkça scripti kendiniz çalıştırmak yerine dumps klasöründeki dumplardan yararlanmanızı tavsiye ederim.   
 
-Her bir kombinasyon için ayrı bir request yollandığından dolayı script sonunda yaklaşık olarak toplam 77000 adet istek **İçişleri Bakanlığı**'na bağlı olan
+Her bir kombinasyon için ayrı bir request yollandığından dolayı script sonunda yaklaşık olarak toplam 75461 adet istek **İçişleri Bakanlığı**'na bağlı olan
 https://adres.nvi.gov.tr/VatandasIslemleri/AdresSorgu adresine yollanmış olur.   
 
-Sistem, Bağlantı ve Veri Tabanı Sunucunuzun hızına bağlı olarak bu işlem 12 (tek bir veri tabanına bilgi girişi) - 20 saat (her üç veri tabanına veri girişi) arasında sürer.
+Sistem, Bağlantı ve Veri Tabanı Sunucunuzun hızına bağlı olarak bu işlem 12 - 15 saat (her üç veri tabanına veri girişi) arasında sürer.
+
+
+```
+Total Requests: 75461
+Runtime : 12:22:48.273607
+```
+
+
 
 # Crawler'ın Kullanımı
 - İlk olarak repoyu clonlayın: `git clone https://github.com/emreuenal/turkiye-il-ilce-sokak-mahalle-veri-tabani.git`

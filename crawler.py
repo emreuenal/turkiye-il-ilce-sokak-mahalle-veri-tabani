@@ -193,5 +193,6 @@ if use_mariadb:
     mdb_connection.close()
     print("MariaDB / MySQL connection is closed")
 
-print("Duration: " + duration)
 print("Total Requests: " + str(response_count))
+print("Duration: " + duration)
+

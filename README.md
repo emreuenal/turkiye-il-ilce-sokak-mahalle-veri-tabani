@@ -1,6 +1,6 @@
 # Türkiye Adres Veri Tabanı
 Bu Repo https://adres.nvi.gov.tr/VatandasIslemleri/AdresSorgu adresinde yer alan tüm İl - İlçe - Mahalle / Köy / Mezra / Mevki - CSBM 
-bilgilerini almak için oluşturulmuş **Pyton 3** scriptini içerir.
+bilgilerini almak için oluşturulmuş **Python 3** scriptini içerir.
 
 Üzerinde çalışmakta olduğum bir proje için bu bilgiler gerekti ve tam olarak işime yarayacak ayrıntıda bir veri tabanı bulamadığım
 için bir python crawler yazarak bu bilgileri PostgreSQL, MariaDB ve MongoDB veri tabanlarına aktardım.

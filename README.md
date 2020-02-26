@@ -3,7 +3,7 @@ Bu Repo https://adres.nvi.gov.tr/VatandasIslemleri/AdresSorgu adresinde yer alan
 bilgilerini almak için oluşturulmuş **Python 3** scriptini içerir.
 
 Üzerinde çalışmakta olduğum bir proje için bu bilgiler gerekti ve tam olarak işime yarayacak ayrıntıda bir veri tabanı bulamadığım
-için bir python crawler yazarak bu bilgileri PostgreSQL, MariaDB ve MongoDB veri tabanlarına aktardım.
+için bir python crawler yazarak bu bilgileri PostgreSQL, MariaDB, MongoDB ve Sqlite veri tabanlarına aktardım.
 
 Eğer siz de bu bilgilere ihtiyaç duyuyorsanız bu crawler'ı kullanabilir **(!!! Lütfen Aşağıdaki Uyarıları Okuyunuz)** ya da dumps klasöründen
 kullanmak istediğiniz veri tabanı sunucusu için uygun olan dump'ı indirebilirsiniz.
@@ -36,7 +36,7 @@ Crawling işlemi biraz(!) süreceği için, eğer uzak sunucunuza ssh ile bağla
 screen ya da tmux gibi bir terminal multiplexer kullanmanızı tavsiye ederim.
 
 # Veri Tabanı Yapısı    
-## PostgreSQL ve MariaDB / MySQL
+## PostgreSQL, MariaDB / MySQL ve Sqlite
 Dört Adet Tablodan oluşmaktadır: `iller`, `ilceler`, `mahalleler` ve `sokaklar`.
 - `iller` tablosu il isimlerini ve il kimlik numaralarını içerir (`il_id`, `il_adi`).
 - `ilceler` tablosu ilçe isimlerini, ilçe kimlik numaralarını ve iller tablosundaki bilgileri içerir (`ilce_id`, `ilce_adi`, `il_id`, `il_adi`).

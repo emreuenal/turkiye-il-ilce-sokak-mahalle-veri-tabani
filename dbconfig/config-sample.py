@@ -1,7 +1,8 @@
-# Database Connection Configuration File
+# Database Connection Configurations File
 use_mariadb = False
 use_postgresql = False
 use_mongodb = False
+use_sqlite = False
 
 if use_mariadb:
     import MySQLdb as mariadb
@@ -14,3 +15,7 @@ if use_mongodb:
     from pymongo import MongoClient
     client = MongoClient('localhost', 27017)
     mongodb = client.tr_adres
+if use_sqlite:
+    import sqlite3
+    sqlite_connection = sqlite3.connect('tr_adres.db')
+    

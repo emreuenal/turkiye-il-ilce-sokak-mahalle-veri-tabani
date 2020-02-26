@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import json
 import datetime
-from dbconfig.config import use_mariadb, use_postgresql, use_mongodb
+from dbconfig.config import use_mariadb, use_postgresql, use_mongodb, use_sqlite
 
 if use_mariadb:
   from dbconfig.config import mdb_connection
@@ -10,6 +10,9 @@ if use_postgresql:
   from dbconfig.config import pg_connection
 if use_mongodb:
   from dbconfig.config import mongodb
+if use_sqlite:
+  from dbconfig.config import sqlite_connection
+
 
 # We need:
 # BeautifulSoup to get request_verification_token_header from a hidden input (view-source:https://adres.nvi.gov.tr/VatandasIslemleri/AdresSorgu, line 685)
@@ -35,6 +38,15 @@ if use_mariadb:
   mdb_cursor.execute("CREATE TABLE IF NOT EXISTS mahalleler (mahalle_id INT PRIMARY KEY, mahalle_adi VARCHAR(255), ilce_id INT, ilce_adi VARCHAR(255), il_id INT, il_adi VARCHAR(255));")
   mdb_cursor.execute("CREATE TABLE IF NOT EXISTS sokaklar (sokak_id INT PRIMARY KEY, sokak_adi VARCHAR(255), mahalle_id INT, mahalle_adi VARCHAR(255), ilce_id INT, ilce_adi VARCHAR(255), il_id INT, il_adi VARCHAR(255));")
   mdb_connection.commit()
+
+if use_sqlite:
+  sqlite_cursor = sqlite_connection.cursor()
+  sqlite_cursor.execute('''CREATE TABLE IF NOT EXISTS iller (il_id integer PRIMARY KEY, il_adi text)''')
+  sqlite_cursor.execute('''CREATE TABLE IF NOT EXISTS ilceler (ilce_id integer PRIMARY KEY, ilce_adi text, il_id integer, il_adi text)''')
+  sqlite_cursor.execute('''CREATE TABLE IF NOT EXISTS mahalleler (mahalle_id integer PRIMARY KEY, mahalle_adi text, ilce_id integer, ilce_adi text, il_id integer, il_adi text)''')
+  sqlite_cursor.execute('''CREATE TABLE IF NOT EXISTS sokaklar (sokak_id interger PRIMARY KEY, sokak_adi text, mahalle_id integer, mahalle_adi text, ilce_id integer, ilce_adi text, il_id integer, il_adi text)''')
+  sqlite_connection.commit()
+
 
 response_count = 0
 start_time = datetime.datetime.now()
@@ -98,6 +110,10 @@ for il in json_obj_iller:
         },
         upsert=True
       )
+
+    if use_sqlite:
+      sqlite_cursor.execute('INSERT OR IGNORE INTO iller VALUES (?,?)', (il_id, il_adi) )
+    sqlite_connection.commit()
     
     data = {'ilKimlikNo': il["kimlikNo"]}
     response_ilce = requests.post('https://adres.nvi.gov.tr/Harita/ilceListesi', headers=headers, cookies=cookies, data=data)
@@ -125,6 +141,11 @@ for il in json_obj_iller:
             upsert=True
           )
 
+        if use_sqlite:
+          sqlite_cursor.execute('INSERT OR IGNORE INTO ilceler VALUES (?,?,?,?)', (ilce_id, ilce_adi, il_id, il_adi) )
+        sqlite_connection.commit()
+        
+
         data = {'ilceKimlikNo': ilce["kimlikNo"]}
         response_mahallekoy = requests.post('https://adres.nvi.gov.tr/Harita/mahalleKoyBaglisiListesi', headers=headers, cookies=cookies, data=data)
         response_count = response_count + 1
@@ -151,6 +172,10 @@ for il in json_obj_iller:
                 upsert=True
               )
 
+            if use_sqlite:
+              sqlite_cursor.execute('INSERT OR IGNORE INTO mahalleler VALUES (?,?,?,?,?,?)', (mahalle_id, mahalle_adi, ilce_id, ilce_adi, il_id, il_adi) )
+            sqlite_connection.commit()
+
             data = {'mahalleKoyBaglisiKimlikNo': mahallekoy["kimlikNo"]}
             response_yolListesi = requests.post('https://adres.nvi.gov.tr/Harita/yolListesi', headers=headers, cookies=cookies, data=data)
             response_count = response_count + 1
@@ -176,6 +201,10 @@ for il in json_obj_iller:
                     },
                     upsert=True
                   )
+
+                if use_sqlite:
+                  sqlite_cursor.execute('INSERT OR IGNORE INTO sokaklar VALUES (?,?,?,?,?,?,?,?)', (sokak_id, sokak_adi, mahalle_id, mahalle_adi, ilce_id, ilce_adi, il_id, il_adi) )
+                sqlite_connection.commit()
     
 stop_time = datetime.datetime.now()
 duration = stop_time - start_time
@@ -192,6 +221,10 @@ if use_mariadb:
     mdb_cursor.close()
     mdb_connection.close()
     print("MariaDB / MySQL connection is closed")
+
+if use_sqlite:
+  sqlite_connection.close()
+  print("SQLite connection is closed")
 
 print("Total Requests: " + str(response_count))
 print("Duration: " + duration)

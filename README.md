@@ -47,4 +47,80 @@ Dört Adet Tablodan oluşmaktadır: `iller`, `ilceler`, `mahalleler` ve `sokakla
 Tablo isimleri PostgreSQL ve MariaDB / MySQL ile aynıdır. Tek fark her bir tablonun id sütunları (`il_id`, `ilce_id`, `mahalle_id`, `sokak_id`) mongodb yapısından dolayı (ObjectID kullanmamak için)
 `_id` şeklinde oluşturulmuştur.
 
-
+```
+> db.iller.findOne()
+{ "_id" : 1, "il_adi" : "ADANA" }
+```
+```
+> db.ilceler.findOne()
+{ "_id" : 1757, "il_adi" : "ADANA", "il_id" : 1, "ilce_adi" : "ALADAĞ" }
+```
+```
+> db.mahalleler.findOne()
+{
+        "_id" : 176887,
+        "il_adi" : "ADANA",
+        "il_id" : 1,
+        "ilce_adi" : "ALADAĞ",
+        "ilce_id" : 1757,
+        "mahalle_adi" : "AKÖREN MAHALLESİ"
+}
+```
+```
+> db.sokaklar.findOne()
+{
+        "_id" : 566149,
+        "il_adi" : "ADANA",
+        "il_id" : 1,
+        "ilce_adi" : "ALADAĞ",
+        "ilce_id" : 1757,
+        "mahalle_adi" : "AKÖREN MAHALLESİ",
+        "mahalle_id" : 176887,
+        "sokak_adi" : "AKDERE (Sokak)"
+}
+```
+**Not:**  ObjectID'li versiyona ihtiyaç duyarsanız helpers klasöründeki scriptden faydalanabilirsiniz.
+```
+> db.iller.findOne()
+{
+        "_id" : ObjectId("5e56345febe7d0061a6c0dd2"),
+        "il_id" : 1,
+        "il_adi" : "ADANA"
+}
+```
+```
+> db.ilceler.findOne()
+{
+        "_id" : ObjectId("5e563460ebe7d0061a6c0e23"),
+        "ilce_id" : 1757,
+        "ilce_adi" : "ALADAĞ",
+        "il_id" : 1,
+        "il_adi" : "ADANA"
+}
+```
+```
+> db.mahalleler.findOne()
+{
+        "_id" : ObjectId("5e563460ebe7d0061a6c11f0"),
+        "mahalle_id" : 176887,
+        "mahalle_adi" : "AKÖREN MAHALLESİ",
+        "ilce_id" : 1757,
+        "ilce_adi" : "ALADAĞ",
+        "il_id" : 1,
+        "il_adi" : "ADANA"
+}
+```
+```
+> db.sokaklar.findOne()
+{
+        "_id" : ObjectId("5e563473ebe7d0061a6d3495"),
+        "sokak_id" : 566149,
+        "sokak_adi" : "AKDERE (Sokak)",
+        "mahalle_id" : 176887,
+        "mahalle_adi" : "AKÖREN MAHALLESİ",
+        "ilce_id" : 1757,
+        "ilce_adi" : "ALADAĞ",
+        "il_id" : 1,
+        "il_adi" : "ADANA"
+}
+```

@@ -1,0 +1,5 @@
+psycopg2
+requests
+pymongo
+beautifulsoup4
+mysqlclient

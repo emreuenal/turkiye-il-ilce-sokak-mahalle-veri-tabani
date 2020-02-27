@@ -3,6 +3,7 @@ use_mariadb = False
 use_postgresql = False
 use_mongodb = False
 use_sqlite = False
+use_redis = False
 
 if use_mariadb:
     import MySQLdb as mariadb
@@ -18,4 +19,7 @@ if use_mongodb:
 if use_sqlite:
     import sqlite3
     sqlite_connection = sqlite3.connect('tr_adres.db')
+if use_redis:
+    import redis
+    red = redis.Redis(host='localhost', port=6379, db=0, decode_responses=True)
     

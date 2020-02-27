@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import json
 import datetime
-from dbconfig.config import use_mariadb, use_postgresql, use_mongodb, use_sqlite
+from dbconfig.config import use_mariadb, use_postgresql, use_mongodb, use_sqlite, use_redis
 
 if use_mariadb:
   from dbconfig.config import mdb_connection
@@ -12,6 +12,8 @@ if use_mongodb:
   from dbconfig.config import mongodb
 if use_sqlite:
   from dbconfig.config import sqlite_connection
+if use_redis:
+  from dbconfig.config import red
 
 
 # We need:
@@ -113,7 +115,10 @@ for il in json_obj_iller:
 
     if use_sqlite:
       sqlite_cursor.execute('INSERT OR IGNORE INTO iller VALUES (?,?)', (il_id, il_adi) )
-    sqlite_connection.commit()
+
+    if use_redis:
+      red.hset('tr_adres:iller:' + str(il_id), 'il_adi', il_adi)
+      
     
     data = {'ilKimlikNo': il["kimlikNo"]}
     response_ilce = requests.post('https://adres.nvi.gov.tr/Harita/ilceListesi', headers=headers, cookies=cookies, data=data)
@@ -143,7 +148,16 @@ for il in json_obj_iller:
 
         if use_sqlite:
           sqlite_cursor.execute('INSERT OR IGNORE INTO ilceler VALUES (?,?,?,?)', (ilce_id, ilce_adi, il_id, il_adi) )
-        sqlite_connection.commit()
+
+        if use_redis:
+          dict_to_insert = {}
+          dict_to_insert = {
+            'ilce_adi': ilce_adi, 
+            'il_id': il_id, 
+            'il_adi': il_adi
+          }
+          red.hmset('tr_adres:ilceler:' + str(ilce_id), dict_to_insert)
+        
         
 
         data = {'ilceKimlikNo': ilce["kimlikNo"]}
@@ -174,7 +188,18 @@ for il in json_obj_iller:
 
             if use_sqlite:
               sqlite_cursor.execute('INSERT OR IGNORE INTO mahalleler VALUES (?,?,?,?,?,?)', (mahalle_id, mahalle_adi, ilce_id, ilce_adi, il_id, il_adi) )
-            sqlite_connection.commit()
+
+            if use_redis:
+              dict_to_insert = {}
+              dict_to_insert = {
+                'mahalle_adi': mahalle_adi, 
+                'ilce_id': ilce_id, 
+                'ilce_adi': ilce_adi, 
+                'il_id': il_id, 
+                'il_adi': il_adi
+              }
+              red.hmset('tr_adres:mahalleler:' + str(mahalle_id), dict_to_insert)
+            
 
             data = {'mahalleKoyBaglisiKimlikNo': mahallekoy["kimlikNo"]}
             response_yolListesi = requests.post('https://adres.nvi.gov.tr/Harita/yolListesi', headers=headers, cookies=cookies, data=data)
@@ -204,7 +229,20 @@ for il in json_obj_iller:
 
                 if use_sqlite:
                   sqlite_cursor.execute('INSERT OR IGNORE INTO sokaklar VALUES (?,?,?,?,?,?,?,?)', (sokak_id, sokak_adi, mahalle_id, mahalle_adi, ilce_id, ilce_adi, il_id, il_adi) )
-                sqlite_connection.commit()
+
+                if use_redis:
+                  dict_to_insert = {}
+                  dict_to_insert = {
+                    'sokak_adi': sokak_adi, 
+                    'mahalle_id': mahalle_id, 
+                    'mahalle_adi': mahalle_adi, 
+                    'ilce_id': ilce_id, 
+                    'ilce_adi': ilce_adi, 
+                    'il_id': il_id, 
+                    'il_adi': il_adi
+                  }
+                  red.hmset('tr_adres:sokaklar:' + str(sokak_id), dict_to_insert)
+                
     
 stop_time = datetime.datetime.now()
 duration = stop_time - start_time
@@ -223,6 +261,7 @@ if use_mariadb:
     print("MariaDB / MySQL connection is closed")
 
 if use_sqlite:
+  sqlite_connection.commit()
   sqlite_connection.close()
   print("SQLite connection is closed")
 

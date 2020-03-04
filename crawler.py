@@ -266,5 +266,5 @@ if use_sqlite:
   print("SQLite connection is closed")
 
 print("Total Requests: " + str(response_count))
-print("Duration: " + duration)
+print("Duration: " + str(duration))
 

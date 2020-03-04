@@ -3,3 +3,4 @@ requests
 pymongo
 beautifulsoup4
 mysqlclient
+redis

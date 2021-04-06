@@ -3,7 +3,7 @@ https://adres.nvi.gov.tr/VatandasIslemleri/AdresSorgu adresi google recaptcha ku
 
 Birkaç değişiklik yaparak il ve ilçe data'larını özel bir sigorta şirketinin sayfasından çektim. Sonrasında gelen bu bilgileri(il id ve ilçe id) kullanarak nvi adres sorgu sayfasından mahalleleri ve sokakları çekmeyi başardım.
 
-Günce sayılar şu şekildedir:
+Günce sayılar şu şekildedir(5 Nisan 2021):
 ```
 iller:          81
 ilçeler:        970

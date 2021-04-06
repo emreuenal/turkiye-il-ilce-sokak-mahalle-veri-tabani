@@ -1,4 +1,19 @@
 # Türkiye Adres Veri Tabanı
+https://adres.nvi.gov.tr/VatandasIslemleri/AdresSorgu adresi google recaptcha kullanmaya başladığından dolayı tüm datayı buradan çekemiyoruz artık. Fakat Mahalle / Köy / Mezra / Mevki (db'de mahalleler) ve CSBM (db'de sokaklar) api adresleri captcha onaysız çalışıyor. Bu api adreslerine ulaşmak için gerekli olan data ve cookies bilgilerini de birkaç yönlendirme arkasına koymuşlar. Bu sebeplerden ötürü crawler.py ve crawler_async.py ile oldukları şekilde artık dataları çekemezsiniz(https://github.com/emreuenal/turkiye-il-ilce-sokak-mahalle-veri-tabani/issues/3).
+
+Birkaç değişiklik yaparak il ve ilçe data'larını özel bir sigorta şirketinin sayfasından çektim. Sonrasında gelen bu bilgileri(il id ve ilçe id) kullanarak nvi adres sorgu sayfasından mahalleleri ve sokakları çekmeyi başardım.
+
+Günce sayılar şu şekildedir:
+```
+iller:          81
+ilçeler:        970
+mahalleler:     74276
+sokaklar:       1148699
+```
+Yeni crawler gayet iyi çalışıyor, yaklaşık 2 saat 40 dakikada tüm dataları alarak mysql, postgresql, mongodb ve sqlite veritabanlarına aktardı fakat özel bir sigorta şirketinin adresini içerdiği için şu anda repoda paylaşamıyorum, bu konuda tüm önerilerinize ve fikirlerinize açığım. 
+
+--- 
+
 Bu Repo https://adres.nvi.gov.tr/VatandasIslemleri/AdresSorgu adresinde yer alan tüm İl - İlçe - Mahalle / Köy / Mezra / Mevki - CSBM 
 bilgilerini almak için oluşturulmuş **Python 3** scriptini içerir.
 
